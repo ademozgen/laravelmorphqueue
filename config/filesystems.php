@@ -64,6 +64,14 @@ return [
             'url' => env('AWS_URL'),
             'endpoint' => env('AWS_ENDPOINT'),
         ],
+        'minio' => [
+            'driver' => 'minio',
+            'key' => env('MINIO_KEY', 'minioadmin'),
+            'secret' => env('MINIO_SECRET', 'minioadmin'),
+            'region' => 'us-east-1',
+            'bucket' => env('MINIO_BUCKET','oryantasyon'),
+            'endpoint' => env('MINIO_ENDPOINT','http://localhost:9000')
+        ]
 
     ],
 

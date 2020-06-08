@@ -13,6 +13,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-     return view('welcome', ['users' => App\User::all()]);
+Route::get('/', "HomeController@index");
+
+Route::get('/fire', function () {
+    event(new \App\Events\TestEvent());
+    return 'ok';
+});
+
+Route::get('{path}','HomeController@index')->where( 'path', '([A-z\d-/_.]+)?' );
+
+
+Route::get('people/{name}/{surname?}', function ($name, $surname) {
+    return 'Hello ' . $name . ' ' . $surname;
 });

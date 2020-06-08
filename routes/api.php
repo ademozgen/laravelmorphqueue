@@ -14,8 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+
+
+Route::middleware("auth:api")->group(function () {
+    Route::get('/user', "UserController@getUser");
+    Route::post("logout", 'AuthController@logout');
 });
 
 
@@ -24,3 +27,24 @@ Route::post('user', "UserController@store");
 Route::get('morphone', "TestController@morphOne");
 Route::get('morphmany', "TestController@morphMany");
 Route::get('morphtomany', "TestController@morphManyToMany");
+
+Route::post('minio', "TestController@minio");
+
+
+Route::get('test/{id}', "TestController@index");
+Route::post('login', "AuthController@login");
+
+Route::post('signup', 'UserController@signup');
+Route::get('signup/activate/{token}', 'UserController@signupActivate');
+
+
+
+Route::group([
+    'prefix' => 'password'
+], function () {
+    Route::post('create', 'PasswordResetController@create');
+    Route::get('find/{token}', 'PasswordResetController@find');
+    Route::post('reset', 'PasswordResetController@reset');
+});
+
+

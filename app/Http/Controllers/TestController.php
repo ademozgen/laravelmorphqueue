@@ -5,15 +5,37 @@ namespace App\Http\Controllers;
 use App\Http\Resources\CommentResource;
 use App\Http\Resources\PostResource;
 use App\Http\Resources\TagResource;
+use http\Env\Response;
 use Illuminate\Http\Request;
 use App\Post;
 use App\Image;
 use App\Comment;
 use App\Video;
 use App\Tag;
-
+use Storage;
+use Illuminate\Support\Facades\Redis;
 class TestController extends Controller
 {
+
+    public function index($id){
+        Redis::publish('test-channel', response()->json(Redis::get("name")));
+
+        Redis::set('name', 'Taylor');
+
+        return response()->json(Redis::get("name"));
+    }
+
+
+    public function minio(Request $request){
+          try {
+              Storage::disk('minio')->put('avatars/1', $request->file("file"));
+              return response()->json(["message"=>"Yükleme Başarılı"]);
+          } catch (\Exception $e){
+              return response()->json($e->getMessage(), 200);
+          }
+    }
+
+
     public function morphOne()
     {   //retrieve data
          //  $post = Post::first();
